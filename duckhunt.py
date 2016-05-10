@@ -1,6 +1,12 @@
 import os, sys
 import pygame
 import pygame.transform
+
+import RPi.GPIO as GPIO
+import time
+
+import pyautogui
+
 from game.registry import adjpos, adjrect, adjwidth, adjheight
 
 # Game parameters
@@ -16,6 +22,12 @@ pygame.display.set_caption(TITLE)
 pygame.mouse.set_visible(False)
 
 import game.driver
+
+#adjust for where your switch is connected
+buttonPin = 17
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(buttonPin,GPIO.IN)
+
 
 class Game(object):
     def __init__(self):
@@ -59,7 +71,8 @@ class Game(object):
                 self.handleEvent(event)
             self.loop()
             self.render()
-
+            if(GPIO.input(buttonPin))
+                pyautogui.click()
         self.cleanup()
 
 if __name__ == "__main__":
