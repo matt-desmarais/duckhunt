@@ -2,6 +2,13 @@ import os, sys
 import pygame
 import pygame.transform
 
+import smbus
+import time
+import math
+from LSM9DS0 import *
+import datetime
+bus = smbus.SMBus(1)
+
 import RPi.GPIO as GPIO
 import time
 
