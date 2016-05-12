@@ -127,13 +127,13 @@ class Game(object):
                 self.handleEvent(event)
             self.loop()
             self.render()
-            if(oldx>newx)
+            if(oldx>newx):
             	pyautogui.moveRel(-5,0)
-            else if(oldx<newx)
+            else if(oldx<newx):
             	pyautogui.moveRel(5,0)
-            if(oldy>newy)
+            if(oldy>newy):
             	pyautogui.moveRel(0,-5)
-            else if(oldy<newy)
+            else if(oldy<newy):
             	pyautogui.moveRel(0,5)
             
             if(GPIO.input(buttonPin))
