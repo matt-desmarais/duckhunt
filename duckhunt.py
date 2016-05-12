@@ -128,15 +128,15 @@ class Game(object):
             self.loop()
             self.render()
             if(oldx>newx):
-            	pyautogui.moveRel(-5,0)
+            	pyautogui.moveRel(-2,0)
             elif(oldx<newx):
-            	pyautogui.moveRel(5,0)
+            	pyautogui.moveRel(2,0)
             if(oldy>newy):
-            	pyautogui.moveRel(0,-5)
+            	pyautogui.moveRel(0,-2)
             elif(oldy<newy):
-            	pyautogui.moveRel(0,5)
+            	pyautogui.moveRel(0,2)
             
-            if(GPIO.input(buttonPin))
+            if(GPIO.input(buttonPin)):
                 pyautogui.click()
         self.cleanup()
 
