@@ -121,20 +121,20 @@ class Game(object):
         while (self.running):
             oldx = readACCx()
             oldy = readACCy()
-            newx = readACCx()
-            newy = readACCy()
             for event in pygame.event.get():
                 self.handleEvent(event)
             self.loop()
             self.render()
+            newx = readACCx()
+            newy = readACCy()
             if(oldx>newx):
-            	pyautogui.moveRel(-2,0)
+            	pyautogui.moveRel(-10,0)
             elif(oldx<newx):
-            	pyautogui.moveRel(2,0)
+            	pyautogui.moveRel(10,0)
             if(oldy>newy):
-            	pyautogui.moveRel(0,-2)
+            	pyautogui.moveRel(0,-10)
             elif(oldy<newy):
-            	pyautogui.moveRel(0,2)
+            	pyautogui.moveRel(0,10)
             
             if(GPIO.input(buttonPin)):
                 pyautogui.click()
