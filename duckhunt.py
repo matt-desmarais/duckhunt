@@ -60,65 +60,9 @@ def readACCz():
 	return acc_combined  if acc_combined < 32768 else acc_combined - 65536
 
 
-def readMAGx():
-        mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_X_L_M)
-        mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_X_H_M)
-        mag_combined = (mag_l | mag_h <<8)
-
-        return mag_combined  if mag_combined < 32768 else mag_combined - 65536
-
-
-def readMAGy():
-        mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_Y_L_M)
-        mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_Y_H_M)
-        mag_combined = (mag_l | mag_h <<8)
-
-        return mag_combined  if mag_combined < 32768 else mag_combined - 65536
-
-
-def readMAGz():
-        mag_l = bus.read_byte_data(MAG_ADDRESS, OUT_Z_L_M)
-        mag_h = bus.read_byte_data(MAG_ADDRESS, OUT_Z_H_M)
-        mag_combined = (mag_l | mag_h <<8)
-
-        return mag_combined  if mag_combined < 32768 else mag_combined - 65536
-
-
-
-def readGYRx():
-        gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_X_L_G)
-        gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_X_H_G)
-        gyr_combined = (gyr_l | gyr_h <<8)
-
-        return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
-  
-
-def readGYRy():
-        gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_Y_L_G)
-        gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_Y_H_G)
-        gyr_combined = (gyr_l | gyr_h <<8)
-
-        return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
-
-def readGYRz():
-        gyr_l = bus.read_byte_data(GYR_ADDRESS, OUT_Z_L_G)
-        gyr_h = bus.read_byte_data(GYR_ADDRESS, OUT_Z_H_G)
-        gyr_combined = (gyr_l | gyr_h <<8)
-
-        return gyr_combined  if gyr_combined < 32768 else gyr_combined - 65536
-
 #initialise the accelerometer
 writeACC(CTRL_REG1_XM, 0b01100111) #z,y,x axis enabled, continuos update,  100Hz data rate
 writeACC(CTRL_REG2_XM, 0b00100000) #+/- 16G full scale
-
-#initialise the magnetometer
-writeMAG(CTRL_REG5_XM, 0b11110000) #Temp enable, M data rate = 50Hz
-writeMAG(CTRL_REG6_XM, 0b01100000) #+/-12gauss
-writeMAG(CTRL_REG7_XM, 0b00000000) #Continuous-conversion mode
-
-#initialise the gyroscope
-writeGRY(CTRL_REG1_G, 0b00001111) #Normal power mode, all axes enabled
-writeGRY(CTRL_REG4_G, 0b00110000) #Continuos update, 2000 dps full scale
 
 
 # Initialize pygame before importing modules
@@ -145,7 +89,9 @@ class Game(object):
         bg = pygame.image.load(background)
         self.background = pygame.transform.smoothscale (bg, self.size)
         self.driver = None
-
+	oldx = SCREEN_HEIGHT/2;
+        oldy = SCREEN_WIDTH/2;
+	
     def init(self):
         self.surface = pygame.display.set_mode(self.size)
         self.driver = game.driver.Driver(self.surface)
@@ -173,11 +119,23 @@ class Game(object):
         self.init()
 
         while (self.running):
+            oldx = readACCx()
+            oldy = readACCy()
+            newx = readACCx()
+            newy = readACCy()
             for event in pygame.event.get():
                 self.handleEvent(event)
             self.loop()
             self.render()
-             pyautogui.moveTo(ACCx, ACCy)
+            if(oldx>newx)
+            	pyautogui.moveRel(-5,0)
+            else if(oldx<newx)
+            	pyautogui.moveRel(5,0)
+            if(oldy>newy)
+            	pyautogui.moveRel(0,-5)
+            else if(oldy<newy)
+            	pyautogui.moveRel(0,5)
+            
             if(GPIO.input(buttonPin))
                 pyautogui.click()
         self.cleanup()
