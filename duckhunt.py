@@ -82,6 +82,7 @@ class Game(object):
         while (self.running):
 	    acc_meas = imu.read_acc_data()
 	    gyr_meas = imu.read_gyr_data()
+	    mag_meas = imu.read_mag_data()
 
 	    # Flip acceleration to match Raspberry Pi frame (rotate around Y_ACC)
 	    acc_meas[2] = -acc_meas[2]
