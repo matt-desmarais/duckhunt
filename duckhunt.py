@@ -2,6 +2,11 @@ import os, sys
 import pygame
 import pygame.transform
 
+import time
+import datetime
+import smbus
+from BerryImu import BerryImu
+
 
 import RPi.GPIO as GPIO
 import time
@@ -17,6 +22,9 @@ FRAMES_PER_SEC = 50
 BG_COLOR = 255, 255, 255
 
 
+bus = smbus.SMBus(1)
+imu = BerryImu(bus)
+imu.initialise()
 
 
 # Initialize pygame before importing modules
@@ -31,7 +39,6 @@ import game.driver
 buttonPin = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(buttonPin,GPIO.IN)
-
 
 class Game(object):
     def __init__(self):
@@ -73,12 +80,19 @@ class Game(object):
         self.init()
 
         while (self.running):
+	acc_meas = imu.read_acc_data()
+	gyr_meas = imu.read_gyr_data()
+
+	# Flip acceleration to match Raspberry Pi frame (rotate around Y_ACC)
+	acc_meas[2] = -acc_meas[2]
+	acc_meas[0] = -acc_meas[0]
+
 
             for event in pygame.event.get():
                 self.handleEvent(event)
             self.loop()
             self.render()
-      
+      	    pyautogui.moveRel(mag_meas[1], 0)
             
             if(GPIO.input(buttonPin)):
                 pyautogui.click()
