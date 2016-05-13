@@ -80,12 +80,12 @@ class Game(object):
         self.init()
 
         while (self.running):
-	acc_meas = imu.read_acc_data()
-	gyr_meas = imu.read_gyr_data()
+	    acc_meas = imu.read_acc_data()
+	    gyr_meas = imu.read_gyr_data()
 
-	# Flip acceleration to match Raspberry Pi frame (rotate around Y_ACC)
-	acc_meas[2] = -acc_meas[2]
-	acc_meas[0] = -acc_meas[0]
+	    # Flip acceleration to match Raspberry Pi frame (rotate around Y_ACC)
+	    acc_meas[2] = -acc_meas[2]
+	    acc_meas[0] = -acc_meas[0]
 
 
             for event in pygame.event.get():
